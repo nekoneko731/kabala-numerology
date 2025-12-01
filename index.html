@@ -86,35 +86,29 @@
       margin-bottom: 10px;
     }
 
+    /* ★ 診断ボタンのスタイル（ここだけでOK） */
     button {
       width: 100%;
-      padding: 14px 16px;
+      padding: 18px 32px;
       border-radius: 999px;
       border: none;
-      font-size: 16px;
+      font-size: 18px;
       font-weight: 600;
       background: linear-gradient(135deg, var(--pink-main), var(--purple));
       color: #fff;
       cursor: pointer;
       box-shadow: 0 10px 26px rgba(226, 54, 130, 0.45);
-      margin-top: 10px;
+      margin-top: 40px;  /* ← 日付入力とボタンのあいだの余白 */
       transition: transform 0.2s, box-shadow 0.2s;
     }
 
-    button {
-    button {
-  padding: 18px 32px;      /* ← ボタンを縦も横も大きく */
-  font-size: 18px;         /* ← 文字を大きく */
-  border-radius: 50px;     /* ← 丸みを強める（可愛い） */
-  box-shadow: 0 10px 26px rgba(226, 54, 130, 0.45);
-  margin-top: 40px;        /* ← ここで余白を広げる */
-  transition: transform 0.2s, box-shadow 0.2s;
-}                          /* ← このカッコを必ず入れる！ */
+    button:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 14px 32px rgba(226, 54, 130, 0.55);
+    }
 
-button:active {
-  transform: translateY(0);
-}
-
+    button:active {
+      transform: translateY(0);
     }
 
     .note {
@@ -200,20 +194,46 @@ button:active {
  <body>
   <div class="app">
    <h1 id="mainTitle">✨ カバラ数秘術</h1>
-   <p class="subtitle" id="subtitle">あなたの生年月日から数秘（運命数）を調べます。</p><label for="year">年</label> <select id="year"><option value="">年を選択してください</option></select> <label for="month">月</label> <select id="month"><option value="">月を選択してください</option></select> <label for="day">日</label> <select id="day"><option value="">日を選択してください</option></select> <button id="calcBtn">💗 数秘（運命数）を調べる</button>
+   <p class="subtitle" id="subtitle">あなたの生年月日から数秘（運命数）を調べます。</p>
+
+   <label for="year">年</label>
+   <select id="year">
+     <option value="">年を選択してください</option>
+   </select>
+
+   <label for="month">月</label>
+   <select id="month">
+     <option value="">月を選択してください</option>
+   </select>
+
+   <label for="day">日</label>
+   <select id="day">
+     <option value="">日を選択してください</option>
+   </select>
+
+   <button id="calcBtn">💗 数秘（運命数）を調べる</button>
+
    <p class="note" id="privacyNote">🔐 入力いただいた誕生日や結果は保存されませんので、安心してお使いください。</p>
    <p id="error" class="error"></p>
+
    <div id="result" class="result">
     <p class="result-title" id="resultTitle">✨ あなたの数秘（運命数）は…</p>
     <p class="result-number" id="resultNumber">-</p>
-    <div class="keyword-block"><strong id="keywordLabel">🔑 キーワード</strong>
-     <p id="resultKeyword"></p>
+
+    <div class="keyword-block">
+      <strong id="keywordLabel">🔑 キーワード</strong>
+      <p id="resultKeyword"></p>
     </div>
-    <div class="desc-block"><strong id="descriptionLabel">📖 特徴</strong>
-     <p id="resultDescription"></p>
-    </div><button class="reset-btn" id="resetBtn">もう一度調べる</button>
+
+    <div class="desc-block">
+      <strong id="descriptionLabel">📖 特徴</strong>
+      <p id="resultDescription"></p>
+    </div>
+
+    <button class="reset-btn" id="resetBtn">もう一度調べる</button>
    </div>
   </div>
+
   <script>
     // Numerology data for numbers 1-9
     const numerologyData = {
@@ -256,7 +276,7 @@ button:active {
     };
 
     const defaultConfig = {
-      main_title: "✨カバラ数秘術",
+      main_title: "✨ カバラ数秘術",
       subtitle: "あなたの生年月日から数秘（運命数）を調べます。",
       calculate_button: "💗 数秘（運命数）を調べる",
       privacy_note: "🔐 入力いただいた誕生日や結果は保存されませんので、安心してお使いください。",
@@ -273,9 +293,9 @@ button:active {
       font_size: 16
     };
 
-    // Populate year dropdown (1900-2024)
+    // Populate year dropdown (1900-2025)
     const yearSelect = document.getElementById('year');
-    for (let i = 2024; i >= 1900; i--) {
+    for (let i = 2025; i >= 1900; i--) {
       const option = document.createElement('option');
       option.value = i;
       option.textContent = `${i}年`;
@@ -302,15 +322,13 @@ button:active {
 
     // Calculate destiny number
     function calculateDestinyNumber(year, month, day) {
-      // Convert to string and sum all digits
       const dateString = `${year}${month}${day}`;
       let sum = 0;
-      
+
       for (let char of dateString) {
         sum += parseInt(char);
       }
-      
-      // Reduce to single digit (1-9)
+
       while (sum > 9) {
         let newSum = 0;
         const sumString = sum.toString();
@@ -319,59 +337,53 @@ button:active {
         }
         sum = newSum;
       }
-      
+
       return sum;
     }
 
     // Handle calculate button click
     document.getElementById('calcBtn').addEventListener('click', function(e) {
       e.preventDefault();
-      
+
       const year = yearSelect.value;
       const month = monthSelect.value;
       const day = daySelect.value;
       const errorEl = document.getElementById('error');
-      
-      // Validation
+
       if (!year || !month || !day) {
         errorEl.textContent = '⚠️ 生年月日をすべて選択してください。';
         return;
       }
-      
-      // Validate date
+
       const date = new Date(year, month - 1, day);
       if (date.getMonth() + 1 !== parseInt(month) || date.getDate() !== parseInt(day)) {
         errorEl.textContent = '⚠️ 正しい日付を選択してください。';
         return;
       }
-      
+
       errorEl.textContent = '';
-      
-      // Calculate destiny number
+
       const destinyNumber = calculateDestinyNumber(year, month, day);
       const data = numerologyData[destinyNumber];
-      
-      // Display results
+
       document.getElementById('resultNumber').textContent = destinyNumber;
       document.getElementById('resultKeyword').textContent = data.keyword;
       document.getElementById('resultDescription').textContent = data.description;
       document.getElementById('result').style.display = 'block';
-      
-      // Scroll to result
+
       document.getElementById('result').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
     });
 
     // Handle reset button
     document.getElementById('resetBtn').addEventListener('click', function(e) {
       e.preventDefault();
-      
+
       yearSelect.value = '';
       monthSelect.value = '';
       daySelect.value = '';
       document.getElementById('error').textContent = '';
       document.getElementById('result').style.display = 'none';
-      
-      // Scroll to top
+
       window.scrollTo({ top: 0, behavior: 'smooth' });
     });
 
@@ -381,8 +393,7 @@ button:active {
       const baseFontStack = "-apple-system, BlinkMacSystemFont, 'Hiragino Kaku Gothic ProN', '游ゴシック体', 'YuGothic', 'メイリオ', sans-serif";
       const customFont = `${baseFont}, ${baseFontStack}`;
       const baseSize = config.font_size || defaultConfig.font_size;
-      
-      // Update text content
+
       document.getElementById('mainTitle').textContent = config.main_title || defaultConfig.main_title;
       document.getElementById('subtitle').textContent = config.subtitle || defaultConfig.subtitle;
       document.getElementById('calcBtn').textContent = config.calculate_button || defaultConfig.calculate_button;
@@ -391,18 +402,17 @@ button:active {
       document.getElementById('keywordLabel').textContent = config.keyword_label || defaultConfig.keyword_label;
       document.getElementById('descriptionLabel').textContent = config.description_label || defaultConfig.description_label;
       document.getElementById('resetBtn').textContent = config.reset_button || defaultConfig.reset_button;
-      
-      // Apply colors
+
       const backgroundColor = config.background_color || defaultConfig.background_color;
       const surfaceColor = config.surface_color || defaultConfig.surface_color;
       const textColor = config.text_color || defaultConfig.text_color;
       const primaryActionColor = config.primary_action_color || defaultConfig.primary_action_color;
       const secondaryActionColor = config.secondary_action_color || defaultConfig.secondary_action_color;
-      
+
       document.body.style.background = `radial-gradient(circle at top left, ${backgroundColor}, ${backgroundColor} 40%, ${backgroundColor} 70%)`;
       document.querySelector('.app').style.background = surfaceColor;
       document.body.style.color = textColor;
-      
+
       const buttons = document.querySelectorAll('button');
       buttons.forEach(button => {
         if (button.id === 'calcBtn') {
@@ -411,11 +421,9 @@ button:active {
           button.style.background = `linear-gradient(135deg, ${primaryActionColor}, ${secondaryActionColor})`;
         }
       });
-      
-      // Apply font
+
       document.body.style.fontFamily = customFont;
-      
-      // Apply font sizes
+
       document.getElementById('mainTitle').style.fontSize = `${baseSize * 1.625}px`;
       document.querySelector('.subtitle').style.fontSize = `${baseSize * 0.875}px`;
       document.querySelectorAll('label').forEach(label => {
@@ -503,10 +511,36 @@ button:active {
       });
     }
   </script>
- <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9a70d8bf94aa1450',t:'MTc2NDU3Mzg4NS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 
+  <script>
+    (function(){
+      function c(){
+        var b=a.contentDocument||a.contentWindow.document;
+        if(b){
+          var d=b.createElement('script');
+          d.innerHTML="window.__CF$cv$params={r:'9a70d8bf94aa1450',t:'MTc2NDU3Mzg4NS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";
+          b.getElementsByTagName('head')[0].appendChild(d)
+        }
+      }
+      if(document.body){
+        var a=document.createElement('iframe');
+        a.height=1;a.width=1;
+        a.style.position='absolute';
+        a.style.top=0;a.style.left=0;
+        a.style.border='none';
+        a.style.visibility='hidden';
+        document.body.appendChild(a);
+        if('loading'!==document.readyState)c();
+        else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);
+        else{
+          var e=document.onreadystatechange||function(){};
+          document.onreadystatechange=function(b){
+            e(b);
+            'loading'!==document.readyState&&(document.onreadystatechange=e,c())
+          }
+        }
+      }
+    })();
+  </script>
+ </body>
 </html>
-
-
-
-
