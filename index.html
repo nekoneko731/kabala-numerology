@@ -1,15 +1,11 @@
 <!doctype html>
 <html lang="ja">
- <head>
+<head>
   <meta charset="UTF-8">
   <title>カバラ数秘術｜運命数チェッカー</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <script src="/_sdk/element_sdk.js"></script>
-  <style>
-    body {
-      box-sizing: border-box;
-    }
 
+  <style>
     :root {
       --pink-light: #ffe6f1;
       --pink-main:  #ff4b9a;
@@ -21,23 +17,27 @@
       --shadow-soft: 0 14px 40px rgba(255, 90, 160, 0.28);
     }
 
-    * { box-sizing: border-box; }
+    * {
+      box-sizing: border-box;
+    }
 
     html, body {
       height: 100%;
       margin: 0;
+      padding: 0;
     }
 
     body {
-      font-family: -apple-system, BlinkMacSystemFont, "Hiragino Kaku Gothic ProN",
-        "游ゴシック体", "YuGothic", "メイリオ", sans-serif;
-      background: radial-gradient(circle at top left, #ffeef7, #ffe6f1 40%, #f8eaff 70%);
+      font-family: -apple-system, BlinkMacSystemFont,
+        "Hiragino Kaku Gothic ProN", "游ゴシック体",
+        "YuGothic", "メイリオ", sans-serif;
+      background: radial-gradient(circle at top left,
+                  #ffeef7, #ffe6f1 40%, #f8eaff 70%);
       display: flex;
       align-items: center;
       justify-content: center;
       padding: 24px;
       color: var(--text-main);
-      width: 100%;
     }
 
     .app {
@@ -45,10 +45,8 @@
       max-width: 720px;
       background: #ffffff;
       border-radius: 24px;
-      padding: 28px 22px;
+      padding: 28px 22px 32px;
       box-shadow: var(--shadow-soft);
-      position: relative;
-      overflow: hidden;
     }
 
     h1 {
@@ -58,14 +56,14 @@
       -webkit-background-clip: text;
       background-clip: text;
       color: transparent;
-      margin-bottom: 4px;
+      margin: 0 0 4px;
     }
 
     .subtitle {
       text-align: center;
       font-size: 14px;
       color: #7a667f;
-      margin-bottom: 20px;
+      margin: 0 0 20px;
     }
 
     label {
@@ -86,10 +84,14 @@
       margin-bottom: 10px;
     }
 
-    /* ★ 診断ボタンのスタイル（ここだけでOK） */
+    /* 「日」の下だけ少し余白を増やす */
+    #day {
+      margin-bottom: 24px;
+    }
+
     button {
       width: 100%;
-      padding: 18px 32px;
+      padding: 20px 32px;
       border-radius: 999px;
       border: none;
       font-size: 18px;
@@ -98,7 +100,7 @@
       color: #fff;
       cursor: pointer;
       box-shadow: 0 10px 26px rgba(226, 54, 130, 0.45);
-      margin-top: 40px;  /* ← 日付入力とボタンのあいだの余白 */
+      margin-top: 16px;
       transition: transform 0.2s, box-shadow 0.2s;
     }
 
@@ -114,19 +116,20 @@
     .note {
       font-size: 12px;
       color: #8a758f;
-      margin: 8px 0;
+      margin: 10px 0 0;
     }
 
     .error {
       font-size: 13px;
       color: var(--error);
       min-height: 1.2em;
+      margin-top: 6px;
       margin-bottom: 10px;
     }
 
     .result {
       display: none;
-      margin-top: 20px;
+      margin-top: 24px;
       padding-top: 20px;
       border-top: 1px dashed rgba(255,148,196,0.7);
     }
@@ -146,7 +149,7 @@
       -webkit-background-clip: text;
       background-clip: text;
       color: transparent;
-      margin-bottom: 10px;
+      margin: 0 0 10px;
     }
 
     .keyword-block,
@@ -186,361 +189,217 @@
     .reset-btn:active {
       transform: translateY(0);
     }
+
+    @media (max-width: 480px) {
+      .app {
+        padding: 20px 16px 24px;
+      }
+      h1 {
+        font-size: 22px;
+      }
+      button {
+        font-size: 16px;
+        padding: 16px 24px;
+      }
+    }
   </style>
-  <style>@view-transition { navigation: auto; }</style>
-  <script src="/_sdk/data_sdk.js" type="text/javascript"></script>
-  <script src="https://cdn.tailwindcss.com" type="text/javascript"></script>
- </head>
- <body>
+</head>
+<body>
   <div class="app">
-   <h1 id="mainTitle">✨ カバラ数秘術</h1>
-   <p class="subtitle" id="subtitle">あなたの生年月日から数秘（運命数）を調べます。</p>
+    <h1>✨ カバラ数秘術</h1>
+    <p class="subtitle">あなたの生年月日から数秘（運命数）を調べます。</p>
 
-   <label for="year">年</label>
-   <select id="year">
-     <option value="">年を選択してください</option>
-   </select>
+    <label for="year">年</label>
+    <select id="year">
+      <option value="">年を選択してください</option>
+    </select>
 
-   <label for="month">月</label>
-   <select id="month">
-     <option value="">月を選択してください</option>
-   </select>
+    <label for="month">月</label>
+    <select id="month">
+      <option value="">月を選択してください</option>
+    </select>
 
-   <label for="day">日</label>
-   <select id="day">
-     <option value="">日を選択してください</option>
-   </select>
+    <label for="day">日</label>
+    <select id="day">
+      <option value="">日を選択してください</option>
+    </select>
 
-   <button id="calcBtn">💗 数秘（運命数）を調べる</button>
+    <button id="calcBtn">💗 数秘（運命数）を調べる</button>
 
-   <p class="note" id="privacyNote">🔐 入力いただいた誕生日や結果は保存されませんので、安心してお使いください。</p>
-   <p id="error" class="error"></p>
+    <p class="note">
+      🔐 入力いただいた誕生日や結果は保存されませんので、安心してお使いください。
+    </p>
 
-   <div id="result" class="result">
-    <p class="result-title" id="resultTitle">✨ あなたの数秘（運命数）は…</p>
-    <p class="result-number" id="resultNumber">-</p>
+    <p id="error" class="error"></p>
 
-    <div class="keyword-block">
-      <strong id="keywordLabel">🔑 キーワード</strong>
-      <p id="resultKeyword"></p>
+    <div id="result" class="result">
+      <p class="result-title">✨ あなたの数秘（運命数）は…</p>
+      <p class="result-number" id="resultNumber">-</p>
+
+      <div class="keyword-block">
+        <strong>🔑 キーワード</strong>
+        <p id="resultKeyword"></p>
+      </div>
+
+      <div class="desc-block">
+        <strong>📖 特徴</strong>
+        <p id="resultDescription"></p>
+      </div>
+
+      <button class="reset-btn" id="resetBtn">もう一度調べる</button>
     </div>
-
-    <div class="desc-block">
-      <strong id="descriptionLabel">📖 特徴</strong>
-      <p id="resultDescription"></p>
-    </div>
-
-    <button class="reset-btn" id="resetBtn">もう一度調べる</button>
-   </div>
   </div>
 
   <script>
-    // Numerology data for numbers 1-9
+    // カバラ数秘術の意味データ（1〜9, 11, 22）
     const numerologyData = {
       1: {
-        keyword: "リーダーシップ・独立・創造性",
-        description: "あなたは生まれながらのリーダーです。独立心が強く、新しいことを始める力があります。自分の道を切り開いていく勇気と決断力を持っています。"
+        keyword: "スタート・リーダー・自立",
+        description: "新しい流れを生み出し、自分の意思で未来を切り開くタイプ。行動力と決断力で周りを引っぱっていきます。"
       },
       2: {
-        keyword: "協調性・感受性・バランス",
-        description: "あなたは調和を大切にする平和主義者です。人の気持ちに敏感で、周囲との調和を保つ能力に優れています。協力とパートナーシップを重視します。"
+        keyword: "やさしさ・調和・サポート",
+        description: "人の気持ちに寄り添い、場を穏やかに整えるやわらかなエネルギーの人。聞き役やつなぎ役として愛されます。"
       },
       3: {
-        keyword: "表現力・楽観性・社交性",
-        description: "あなたは明るく創造的な表現者です。コミュニケーション能力が高く、周囲を楽しませる才能があります。芸術的センスと社交性に恵まれています。"
+        keyword: "楽しさ・発想力・子ども心",
+        description: "明るさとひらめきで周りに軽やかな波動を広げる自由な表現者。好きなことを楽しむほど魅力が高まります。"
       },
       4: {
-        keyword: "安定・実用性・誠実",
-        description: "あなたは堅実で信頼できる基盤を作る人です。努力家で責任感が強く、着実に目標を達成していきます。秩序と安定を大切にします。"
+        keyword: "安定・コツコツ・信頼",
+        description: "丁寧に積み重ねる力で安心を生み、信頼を集める土台づくりの人。まじめさと継続力が大きな実りにつながります。"
       },
       5: {
-        keyword: "自由・変化・冒険",
-        description: "あなたは自由を愛する冒険家です。変化を恐れず、新しい経験を求めます。柔軟性があり、多様な可能性を楽しむことができます。"
+        keyword: "変化・自由・冒険",
+        description: "新しい風を呼び込み、変化を楽しみながら世界を広げていくタイプ。フットワークの軽さがチャンスを連れてきます。"
       },
       6: {
-        keyword: "愛・責任・調和",
-        description: "あなたは愛と奉仕の精神を持つ人です。家族や仲間を大切にし、周囲の世話を焼くことに喜びを感じます。美と調和を追求します。"
+        keyword: "愛情・ケア・美しさ",
+        description: "あたたかな愛で人を包み、心地よい空間や調和を生み出す癒しの人。身近な人を大切にするほど魅力が輝きます。"
       },
       7: {
-        keyword: "探求・知性・精神性",
-        description: "あなたは真実を探求する哲学者です。深い洞察力と分析力を持ち、精神的な成長を重視します。内面の世界を大切にします。"
+        keyword: "探求・本質・マイペース",
+        description: "物ごとの本質を静かに見つめ、深い洞察で新しい気づきを届けるタイプ。一人時間も大切にする研究者気質です。"
       },
       8: {
-        keyword: "力・成功・達成",
-        description: "あなたは目標達成の力を持つ実力者です。野心的で、物質的な成功を手にする能力があります。強い意志と実行力を持っています。"
+        keyword: "パワー・成果・豊かさ",
+        description: "行動力で物事を形にし、豊かさの流れを引き寄せる実現力の人。目標に向かうほど頼られる存在になります。"
       },
       9: {
-        keyword: "完成・奉仕・理想",
-        description: "あなたは人類愛に満ちた理想主義者です。広い視野を持ち、多くの人々のために貢献したいと願います。完成と統合を象徴します。"
+        keyword: "優しさ・奉仕・まとめ役",
+        description: "広い視野で人に寄り添い、流れをやわらかく整える調和の人。みんなの気持ちをくみ取るまとめ役です。"
+      },
+      11: {
+        keyword: "インスピレーション・直感",
+        description: "感性がとても繊細で、直感にすぐれた人。ふと浮かぶひらめきが周りを照らすメッセージになっていきます。"
+      },
+      22: {
+        keyword: "大きなビジョン・現実化",
+        description: "大きな願いを現実につなげていく力を持つビルダータイプ。みんなの夢を形にするサポート役として活躍していきます。"
       }
     };
 
-    const defaultConfig = {
-      main_title: "✨ カバラ数秘術",
-      subtitle: "あなたの生年月日から数秘（運命数）を調べます。",
-      calculate_button: "💗 数秘（運命数）を調べる",
-      privacy_note: "🔐 入力いただいた誕生日や結果は保存されませんので、安心してお使いください。",
-      result_title: "✨ あなたの数秘（運命数）は…",
-      keyword_label: "🔑 キーワード",
-      description_label: "📖 特徴",
-      reset_button: "もう一度調べる",
-      background_color: "#ffeef7",
-      surface_color: "#ffffff",
-      text_color: "#4c3b52",
-      primary_action_color: "#ff4b9a",
-      secondary_action_color: "#a066ff",
-      font_family: "-apple-system, BlinkMacSystemFont, 'Hiragino Kaku Gothic ProN', '游ゴシック体', 'YuGothic', 'メイリオ', sans-serif",
-      font_size: 16
-    };
+    // 年・月・日プルダウンの生成
+    const yearSelect  = document.getElementById("year");
+    const monthSelect = document.getElementById("month");
+    const daySelect   = document.getElementById("day");
 
-    // Populate year dropdown (1900-2025)
-    const yearSelect = document.getElementById('year');
-    for (let i = 2025; i >= 1900; i--) {
-      const option = document.createElement('option');
-      option.value = i;
-      option.textContent = `${i}年`;
-      yearSelect.appendChild(option);
+    // 年：1900〜今年
+    const currentYear = new Date().getFullYear();
+    for (let y = currentYear; y >= 1900; y--) {
+      const op = document.createElement("option");
+      op.value = y;
+      op.textContent = `${y}年`;
+      yearSelect.appendChild(op);
     }
 
-    // Populate month dropdown
-    const monthSelect = document.getElementById('month');
-    for (let i = 1; i <= 12; i++) {
-      const option = document.createElement('option');
-      option.value = i;
-      option.textContent = `${i}月`;
-      monthSelect.appendChild(option);
+    // 月：1〜12
+    for (let m = 1; m <= 12; m++) {
+      const op = document.createElement("option");
+      op.value = m;
+      op.textContent = `${m}月`;
+      monthSelect.appendChild(op);
     }
 
-    // Populate day dropdown
-    const daySelect = document.getElementById('day');
-    for (let i = 1; i <= 31; i++) {
-      const option = document.createElement('option');
-      option.value = i;
-      option.textContent = `${i}日`;
-      daySelect.appendChild(option);
+    // 日：1〜31
+    for (let d = 1; d <= 31; d++) {
+      const op = document.createElement("option");
+      op.value = d;
+      op.textContent = `${d}日`;
+      daySelect.appendChild(op);
     }
 
-    // Calculate destiny number
-    function calculateDestinyNumber(year, month, day) {
+    // マスターナンバー対応のカバラ計算
+    function calcDestinyNumber(year, month, day) {
       const dateString = `${year}${month}${day}`;
       let sum = 0;
-
-      for (let char of dateString) {
-        sum += parseInt(char);
+      for (const ch of dateString) {
+        sum += parseInt(ch, 10);
       }
 
-      while (sum > 9) {
-        let newSum = 0;
-        const sumString = sum.toString();
-        for (let char of sumString) {
-          newSum += parseInt(char);
-        }
-        sum = newSum;
+      // 11 と 22 はそのまま残す
+      while (true) {
+        if (sum === 11 || sum === 22 || sum <= 9) return sum;
+        const s = sum.toString();
+        let next = 0;
+        for (const ch of s) next += parseInt(ch, 10);
+        sum = next;
       }
-
-      return sum;
     }
 
-    // Handle calculate button click
-    document.getElementById('calcBtn').addEventListener('click', function(e) {
+    const errorEl   = document.getElementById("error");
+    const resultEl  = document.getElementById("result");
+    const numEl     = document.getElementById("resultNumber");
+    const keyEl     = document.getElementById("resultKeyword");
+    const descEl    = document.getElementById("resultDescription");
+    const calcBtn   = document.getElementById("calcBtn");
+    const resetBtn  = document.getElementById("resetBtn");
+
+    calcBtn.addEventListener("click", function (e) {
       e.preventDefault();
 
-      const year = yearSelect.value;
-      const month = monthSelect.value;
-      const day = daySelect.value;
-      const errorEl = document.getElementById('error');
+      const y = yearSelect.value;
+      const m = monthSelect.value;
+      const d = daySelect.value;
 
-      if (!year || !month || !day) {
-        errorEl.textContent = '⚠️ 生年月日をすべて選択してください。';
+      // 入力チェック
+      if (!y || !m || !d) {
+        errorEl.textContent = "⚠️ 生年月日をすべて選択してください。";
+        resultEl.style.display = "none";
         return;
       }
 
-      const date = new Date(year, month - 1, day);
-      if (date.getMonth() + 1 !== parseInt(month) || date.getDate() !== parseInt(day)) {
-        errorEl.textContent = '⚠️ 正しい日付を選択してください。';
+      const date = new Date(y, m - 1, d);
+      if (date.getFullYear() !== Number(y) ||
+          date.getMonth() + 1 !== Number(m) ||
+          date.getDate() !== Number(d)) {
+        errorEl.textContent = "⚠️ 正しい日付を選択してください。";
+        resultEl.style.display = "none";
         return;
       }
 
-      errorEl.textContent = '';
+      errorEl.textContent = "";
 
-      const destinyNumber = calculateDestinyNumber(year, month, day);
-      const data = numerologyData[destinyNumber];
+      const n = calcDestinyNumber(y, m, d);
+      const data = numerologyData[n];
 
-      document.getElementById('resultNumber').textContent = destinyNumber;
-      document.getElementById('resultKeyword').textContent = data.keyword;
-      document.getElementById('resultDescription').textContent = data.description;
-      document.getElementById('result').style.display = 'block';
+      numEl.textContent  = n;
+      keyEl.textContent  = data ? data.keyword : "";
+      descEl.textContent = data ? data.description : "";
+      resultEl.style.display = "block";
 
-      document.getElementById('result').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+      resultEl.scrollIntoView({ behavior: "smooth", block: "nearest" });
     });
 
-    // Handle reset button
-    document.getElementById('resetBtn').addEventListener('click', function(e) {
+    resetBtn.addEventListener("click", function (e) {
       e.preventDefault();
-
-      yearSelect.value = '';
-      monthSelect.value = '';
-      daySelect.value = '';
-      document.getElementById('error').textContent = '';
-      document.getElementById('result').style.display = 'none';
-
-      window.scrollTo({ top: 0, behavior: 'smooth' });
+      yearSelect.value  = "";
+      monthSelect.value = "";
+      daySelect.value   = "";
+      errorEl.textContent = "";
+      resultEl.style.display = "none";
+      window.scrollTo({ top: 0, behavior: "smooth" });
     });
-
-    // Element SDK implementation
-    async function onConfigChange(config) {
-      const baseFont = config.font_family || defaultConfig.font_family;
-      const baseFontStack = "-apple-system, BlinkMacSystemFont, 'Hiragino Kaku Gothic ProN', '游ゴシック体', 'YuGothic', 'メイリオ', sans-serif";
-      const customFont = `${baseFont}, ${baseFontStack}`;
-      const baseSize = config.font_size || defaultConfig.font_size;
-
-      document.getElementById('mainTitle').textContent = config.main_title || defaultConfig.main_title;
-      document.getElementById('subtitle').textContent = config.subtitle || defaultConfig.subtitle;
-      document.getElementById('calcBtn').textContent = config.calculate_button || defaultConfig.calculate_button;
-      document.getElementById('privacyNote').textContent = config.privacy_note || defaultConfig.privacy_note;
-      document.getElementById('resultTitle').textContent = config.result_title || defaultConfig.result_title;
-      document.getElementById('keywordLabel').textContent = config.keyword_label || defaultConfig.keyword_label;
-      document.getElementById('descriptionLabel').textContent = config.description_label || defaultConfig.description_label;
-      document.getElementById('resetBtn').textContent = config.reset_button || defaultConfig.reset_button;
-
-      const backgroundColor = config.background_color || defaultConfig.background_color;
-      const surfaceColor = config.surface_color || defaultConfig.surface_color;
-      const textColor = config.text_color || defaultConfig.text_color;
-      const primaryActionColor = config.primary_action_color || defaultConfig.primary_action_color;
-      const secondaryActionColor = config.secondary_action_color || defaultConfig.secondary_action_color;
-
-      document.body.style.background = `radial-gradient(circle at top left, ${backgroundColor}, ${backgroundColor} 40%, ${backgroundColor} 70%)`;
-      document.querySelector('.app').style.background = surfaceColor;
-      document.body.style.color = textColor;
-
-      const buttons = document.querySelectorAll('button');
-      buttons.forEach(button => {
-        if (button.id === 'calcBtn') {
-          button.style.background = `linear-gradient(135deg, ${primaryActionColor}, ${secondaryActionColor})`;
-        } else if (button.id === 'resetBtn') {
-          button.style.background = `linear-gradient(135deg, ${primaryActionColor}, ${secondaryActionColor})`;
-        }
-      });
-
-      document.body.style.fontFamily = customFont;
-
-      document.getElementById('mainTitle').style.fontSize = `${baseSize * 1.625}px`;
-      document.querySelector('.subtitle').style.fontSize = `${baseSize * 0.875}px`;
-      document.querySelectorAll('label').forEach(label => {
-        label.style.fontSize = `${baseSize * 0.875}px`;
-      });
-      document.querySelectorAll('select').forEach(select => {
-        select.style.fontSize = `${baseSize}px`;
-      });
-      document.querySelectorAll('button').forEach(button => {
-        button.style.fontSize = `${baseSize}px`;
-      });
-      document.querySelector('.note').style.fontSize = `${baseSize * 0.75}px`;
-      document.querySelector('.result-title').style.fontSize = `${baseSize * 1.125}px`;
-      document.querySelector('.result-number').style.fontSize = `${baseSize * 3}px`;
-    }
-
-    if (window.elementSdk) {
-      window.elementSdk.init({
-        defaultConfig,
-        onConfigChange,
-        mapToCapabilities: (config) => ({
-          recolorables: [
-            {
-              get: () => config.background_color || defaultConfig.background_color,
-              set: (value) => {
-                config.background_color = value;
-                window.elementSdk.setConfig({ background_color: value });
-              }
-            },
-            {
-              get: () => config.surface_color || defaultConfig.surface_color,
-              set: (value) => {
-                config.surface_color = value;
-                window.elementSdk.setConfig({ surface_color: value });
-              }
-            },
-            {
-              get: () => config.text_color || defaultConfig.text_color,
-              set: (value) => {
-                config.text_color = value;
-                window.elementSdk.setConfig({ text_color: value });
-              }
-            },
-            {
-              get: () => config.primary_action_color || defaultConfig.primary_action_color,
-              set: (value) => {
-                config.primary_action_color = value;
-                window.elementSdk.setConfig({ primary_action_color: value });
-              }
-            },
-            {
-              get: () => config.secondary_action_color || defaultConfig.secondary_action_color,
-              set: (value) => {
-                config.secondary_action_color = value;
-                window.elementSdk.setConfig({ secondary_action_color: value });
-              }
-            }
-          ],
-          borderables: [],
-          fontEditable: {
-            get: () => config.font_family || defaultConfig.font_family,
-            set: (value) => {
-              config.font_family = value;
-              window.elementSdk.setConfig({ font_family: value });
-            }
-          },
-          fontSizeable: {
-            get: () => config.font_size || defaultConfig.font_size,
-            set: (value) => {
-              config.font_size = value;
-              window.elementSdk.setConfig({ font_size: value });
-            }
-          }
-        }),
-        mapToEditPanelValues: (config) => new Map([
-          ["main_title", config.main_title || defaultConfig.main_title],
-          ["subtitle", config.subtitle || defaultConfig.subtitle],
-          ["calculate_button", config.calculate_button || defaultConfig.calculate_button],
-          ["privacy_note", config.privacy_note || defaultConfig.privacy_note],
-          ["result_title", config.result_title || defaultConfig.result_title],
-          ["keyword_label", config.keyword_label || defaultConfig.keyword_label],
-          ["description_label", config.description_label || defaultConfig.description_label],
-          ["reset_button", config.reset_button || defaultConfig.reset_button]
-        ])
-      });
-    }
   </script>
-
-  <script>
-    (function(){
-      function c(){
-        var b=a.contentDocument||a.contentWindow.document;
-        if(b){
-          var d=b.createElement('script');
-          d.innerHTML="window.__CF$cv$params={r:'9a70d8bf94aa1450',t:'MTc2NDU3Mzg4NS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";
-          b.getElementsByTagName('head')[0].appendChild(d)
-        }
-      }
-      if(document.body){
-        var a=document.createElement('iframe');
-        a.height=1;a.width=1;
-        a.style.position='absolute';
-        a.style.top=0;a.style.left=0;
-        a.style.border='none';
-        a.style.visibility='hidden';
-        document.body.appendChild(a);
-        if('loading'!==document.readyState)c();
-        else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);
-        else{
-          var e=document.onreadystatechange||function(){};
-          document.onreadystatechange=function(b){
-            e(b);
-            'loading'!==document.readyState&&(document.onreadystatechange=e,c())
-          }
-        }
-      }
-    })();
-  </script>
- </body>
+</body>
 </html>
