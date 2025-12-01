@@ -102,14 +102,19 @@
     }
 
     button {
-    padding: 18px 32px;     /* ← ボタンを縦も横も大きく */
-    font-size: 18px;        /* ← 文字を大きく */
-    border-radius: 50px;    /* ← 丸みを強める（可愛い） */
+    button {
+  padding: 18px 32px;      /* ← ボタンを縦も横も大きく */
+  font-size: 18px;         /* ← 文字を大きく */
+  border-radius: 50px;     /* ← 丸みを強める（可愛い） */
+  box-shadow: 0 10px 26px rgba(226, 54, 130, 0.45);
+  margin-top: 40px;        /* ← ここで余白を広げる */
+  transition: transform 0.2s, box-shadow 0.2s;
+}                          /* ← このカッコを必ず入れる！ */
 
-    box-shadow: 0 10px 26px rgba(226, 54, 130, 0.45);
-    margin-top: 40px
-    button:active {
-      transform: translateY(0);
+button:active {
+  transform: translateY(0);
+}
+
     }
 
     .note {
@@ -501,6 +506,7 @@
  <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9a70d8bf94aa1450',t:'MTc2NDU3Mzg4NS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 
 </html>
+
 
 
 
